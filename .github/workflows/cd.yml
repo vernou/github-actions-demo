@@ -15,8 +15,8 @@ jobs:
       - name: Update artifact
         uses: actions/upload-artifact@v3
         with:
-          name: repo
-          path: "."
+          name: artifact
+          path: "folder1"
 
   release:
     runs-on: ubuntu-latest
@@ -24,8 +24,8 @@ jobs:
     steps:
       - uses: actions/download-artifact@v3
         with:
-          name: repo
-          path: repo
+          name: artifact
+          path: folder
       - run: ls -R
       - name: Create release
         env:
@@ -33,7 +33,7 @@ jobs:
           tag: ${{ github.ref_name }}
         run: |
           gh release create "$tag" \
-              "repo/file1.txt"
+              "folder/file1.txt"
               --repo="$GITHUB_REPOSITORY" \
               --title="${GITHUB_REPOSITORY#*/} ${tag#v}" \
               --generate-notes
