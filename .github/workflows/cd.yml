@@ -27,6 +27,9 @@ jobs:
           name: artifact
           path: folder
       - run: ls -R
+      - run: echo "$GITHUB_REPOSITORY"
+      - run: echo "${{ github.ref_name }}"
+      - run: echo "${{ secrets.GITHUB_TOKEN }}"
       - name: Create release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
