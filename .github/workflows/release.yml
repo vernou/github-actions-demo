@@ -1,0 +1,27 @@
+name: Create release
+
+on:
+  push:
+    tags:
+      - v*
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: ls -R
+      - run: echo "$GITHUB_REPOSITORY"
+      - run: echo "${{ github.ref_name }}"
+      - run: echo "${{ secrets.GITHUB_TOKEN }}"
+      - name: Create release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ github.ref_name }}
+        run: |
+          gh release create "$tag" \
+              "folder1/file1.txt" \
+              "folder1/file2.txt" \
+              --repo="$GITHUB_REPOSITORY" \
+              --title="${GITHUB_REPOSITORY#*/} ${tag#v}" \
+              --generate-notes
